@@ -5,26 +5,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
-      - uses: android-actions/setup-android@v3
+
       - name: Build APK
         run: |
-          rm -rf android www
+          rm -rf android www node_modules
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
           mkdir -p www
-          echo "<h1>My AI Sadi</h1><p>APK Working</p>" > www/index.html
+          echo "<html><body><h1>My AI Sadi</h1><p>Success!</p></body></html>" > www/index.html
           echo '{"appId":"com.myaisadi.app","appName":"My AI Sadi","webDir":"www"}' > capacitor.config.json
           npx cap add android
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
+
       - uses: actions/upload-artifact@v4
         with:
           name: My-AI-Sadi-APK
