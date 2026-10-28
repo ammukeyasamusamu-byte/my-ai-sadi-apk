@@ -5,30 +5,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-          
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
-
       - name: Build APK
         run: |
           rm -rf android www node_modules
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
           mkdir -p www
-          echo "<html><body><h1>My AI Sadi</h1><p>Success!</p></body></html>" > www/index.html
+          cat > www/index.html << 'HTMLEND'
+          <!DOCTYPE html>
+          <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+          body{margin:0;font-family:sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;color:white;text-align:center}
+          .card{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.3);width:80%;max-width:350px}
+          h1{font-size:32px;margin-bottom:10px}
+          .footer{position:fixed;bottom:0;left:0;width:100%;background:black;color:white;padding:15px;text-align:center;font-weight:bold;letter-spacing:2px}
+          </style></head>
+          <body>
+          <div class="card"><h1>My AI Sadi</h1><p>Welcome to Your Assistant</p></div>
+          <div class="footer">SADI DEVELOPER</div>
+          </body></html>
+          HTMLEND
           echo '{"appId":"com.myaisadi.app","appName":"My AI Sadi","webDir":"www"}' > capacitor.config.json
           npx cap add android
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
-
       - uses: actions/upload-artifact@v4
         with:
-          name: My-AI-Sadi-APK
+          name: SADI-DEVELOPER-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
