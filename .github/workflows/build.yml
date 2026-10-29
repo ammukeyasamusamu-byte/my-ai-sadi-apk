@@ -11,11 +11,11 @@ jobs:
         with:
           node-version: 20
           
-      - name: Setup Java 17
+      - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       - name: Clean
         run: rm -rf android www node_modules package-lock.json
@@ -25,56 +25,88 @@ jobs:
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
 
-      - name: Create App Files
+      - name: Create MEGA BRAIN App Files
         run: |
           mkdir -p www
           echo '{"appId":"com.myaisadi.app","appName":"SADI AI","webDir":"www"}' > capacitor.config.json
           node -e "
           const fs=require('fs');
-          const html=\`<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>SADI AI</title><style>body{margin:0;font-family:sans-serif;background:#0f0f0f;color:#fff;height:100vh;display:flex;flex-direction:column}#splash{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999}#logo{width:120px;height:120px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:60px}#logoText{margin-top:15px;font-size:30px;font-weight:900;letter-spacing:5px}.header{background:#151515;padding:10px;display:flex;justify-content:space-between;font-size:11px;border-bottom:1px solid #222}.active{background:#667eea;padding:6px 12px;border-radius:15px}#chat{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}.msg{padding:10px 14px;border-radius:16px;max-width:80%;font-size:14px;line-height:1.6;white-space:pre-wrap}.user{background:linear-gradient(135deg,#667eea,#764ba2);align-self:flex-end}.ai{background:#1e1e1e;border:1px solid #333;align-self:flex-start}.input-area{display:flex;padding:10px;background:#151515;gap:7px;border-top:1px solid #222}#inp{flex:1;padding:12px 16px;border-radius:22px;background:#222;color:#fff;border:1px solid #333;outline:none}#sendBtn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;width:40px;height:40px;border-radius:50%}</style></head><body>
-          <div id='splash'><div id='logo'>🤖</div><div id='logoText'>SADI AI</div><div style='margin-top:8px;font-size:12px;opacity:.7;letter-spacing:3px'>My AI • Sadi - MEGA BRAIN 160MB</div><div style='margin-top:20px;font-size:10px;opacity:.5'>Loading...</div></div>
-          <div class='header'><div><span class='active'>💬 CHAT</span> <span>🎮 GAMES</span></div><div><button onclick='localStorage.clear();location.reload()' style='background:#222;color:#fff;border:none;padding:4px 8px;border-radius:6px'>🗑️</button></div></div>
+          const html=\`<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>SADI AI</title><style>body{margin:0;font-family:sans-serif;background:#0f0f0f;color:#fff;height:100vh;display:flex;flex-direction:column}#splash{position:fixed;inset:0;background:radial-gradient(circle,#667eea 0%,#000 85%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;animation:fadeOut .5s 2.8s forwards}#logo{width:130px;height:130px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 15px 40px rgba(102,126,234,.7)}#logoText{margin-top:18px;font-size:32px;font-weight:900;letter-spacing:6px}#sub{margin-top:8px;font-size:12px;opacity:.8;letter-spacing:3px}.brain{margin-top:10px;font-size:10px;color:#667eea;font-weight:800;letter-spacing:2px}.loading{margin-top:18px;width:180px;height:4px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden}.bar{height:100%;width:0%;background:#fff;animation:load 2.6s forwards}@keyframes fadeOut{to{opacity:0;visibility:hidden}}@keyframes load{to{width:100%}}.header{background:#151515;padding:10px;display:flex;justify-content:space-between;font-size:11px;border-bottom:1px solid #222}.active{background:#667eea;padding:6px 12px;border-radius:15px;font-weight:700}.icon-btn{background:#222;border:none;color:#fff;padding:5px 9px;border-radius:7px;font-size:11px}#chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}.msg-wrap{display:flex;flex-direction:column;max-width:85%}.msg-wrap.user{align-self:flex-end;align-items:flex-end}.msg-wrap.ai{align-self:flex-start;align-items:flex-start}.msg{padding:12px 15px;border-radius:18px;font-size:14px;line-height:1.75;white-space:pre-wrap;word-break:break-word}.user .msg{background:linear-gradient(135deg,#667eea,#764ba2);border-bottom-right-radius:6px}.ai .msg{background:#1e1e1e;border:1px solid #2a2a2a;border-bottom-left-radius:6px}.time{font-size:9px;opacity:.4;margin-top:4px}.msg-actions{display:flex;gap:5px;margin-top:5px}.act-btn{font-size:10px;background:#2a2a2a;border:1px solid #333;color:#fff;padding:3px 7px;border-radius:10px}.typing{display:flex;gap:5px;padding:12px 16px;background:#1e1e1e;border-radius:18px;width:fit-content}.dot{width:6px;height:6px;background:#667eea;border-radius:50%;animation:bounce 1.2s infinite}.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}#gameTab{display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px}.card{background:#1a1a1a;padding:12px;border-radius:14px;border:1px solid #2a2a2a}.chip{display:inline-block;padding:8px 11px;margin:3px;background:#222;border:1px solid #333;border-radius:18px;font-size:12px;cursor:pointer}.input-area{display:flex;padding:10px;background:#151515;gap:7px;border-top:1px solid #222}#inp{flex:1;padding:12px 16px;border-radius:22px;background:#222;color:#fff;border:1px solid #333;outline:none}#sendBtn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;width:42px;height:42px;border-radius:50%;font-size:18px}img#preview{max-width:100%;border-radius:10px;margin-top:8px}.btn{width:100%;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:800;margin-top:8px}</style></head><body>
+          <div id='splash'><div id='logo'>🤖</div><div id='logoText'>SADI AI</div><div id='sub'>My AI • Sadi</div><div class='brain'>🧠 MEGA BRAIN 160MB KNOWLEDGE</div><div class='loading'><div class='bar'></div></div></div>
+          <div class='header'><div><span id='tC' class='active' onclick='sC()'>💬 CHAT</span> <span id='tG' onclick='sG()'>🎮 GAMES</span> <span id='tI' onclick='sI()'>🎨 EDIT</span></div><div><button class='icon-btn' onclick='clearChat()'>🗑️</button> <button class='icon-btn' onclick='speakLast()'>🔊</button></div></div>
           <div id='chat'></div>
-          <div class='input-area'><input id='inp' placeholder='যা খুশি জিজ্ঞাসা করো... সব পারি!'><button id='sendBtn'>➤</button></div>
+          <div id='gameTab'><div class='card' style='background:linear-gradient(135deg,#ffeb3b 0%,#ff9800 100%);color:#000'><h3>🎲 লুডু সম্পর্কে জানতে আমাকে জিজ্ঞাসা করো!</h3><div style='margin-top:8px'><span class='chip' style='background:#000;color:#ffeb3b' onclick='askChip(\"Ludo Star জেতার trick\")'>🏆 Trick</span><span class='chip' style='background:#000;color:#ffeb3b' onclick='askChip(\"Bangladesh koy namber desh\")'>🇧🇩 BD</span><span class='chip' style='background:#000;color:#ffeb3b' onclick='askChip(\"2+2 koto\")'>🧮 Math</span></div></div><div class='card'><h3>🧠 MEGA BRAIN 160MB - সব জানে</h3><div style='margin-top:8px'><span class='chip' onclick='askChip(\"Free Fire rank push\")'>🔥 FF Rank</span><span class='chip' onclick='askChip(\"Bangladesh er rajdhani ki\")'>🏛️ Rajdhani</span><span class='chip' onclick='askChip(\"Tomar nam ki\")'>🤖 Nam ki?</span><span class='chip' onclick='askChip(\"Tumi chobi edit korte paro?\")'>🎨 Edit?</span><span class='chip' onclick='askChip(\"Namaz koy wakto\")'>🕌 Namaz</span><span class='chip' onclick='askChip(\"Prithibite koyta desh\")'>🌍 Desh</span></div></div><div class='card'><b>🎨 Image Generate</b><br><input id='pmt' style='width:100%;padding:10px;margin-top:8px;border-radius:9px;background:#222;color:#fff;border:1px solid #333' placeholder='যেমন: ludo star'><img id='preview' style='display:none'><button class='btn' onclick='gen()'>✨ Image বানাও</button></div></div>
+          <div id='imageTab' style='display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px'><div class='card'><b>📸 Photo Edit Pro</b><br><input type='file' id='fIn' accept='image/*'><div style='margin-top:8px'><button class='act-btn' onclick='setF(\"none\")'>Original</button><button class='act-btn' onclick='setF(\"grayscale(100%)\")'>B&W</button><button class='act-btn' onclick='setF(\"contrast(150%) brightness(110%)\")'>HD Pro</button><button class='act-btn' onclick='setF(\"sepia(100%)\")'>Sepia</button></div></div></div>
+          <div class='input-area'><span onclick='startV()' style='font-size:22px;cursor:pointer'>🎤</span><input id='inp' placeholder='যা খুশি জিজ্ঞাসা করো... সব পারি!'><button id='sendBtn'>➤</button></div>
+          <div style='background:#000;color:#667eea;padding:7px;text-align:center;font-weight:900;font-size:9px;letter-spacing:2px'>SADI AI - MEGA BRAIN 160MB - V35 - My AI • Sadi</div>
           <script>
-          const chat=document.getElementById('chat'),inp=document.getElementById('inp'),sendBtn=document.getElementById('sendBtn');
-          function addM(t,c){let d=document.createElement('div');d.className='msg '+c;d.textContent=t;let wrap=document.createElement('div');wrap.style.display='flex';wrap.style.flexDirection='column';wrap.style.alignItems=c==='user'?'flex-end':'flex-start';wrap.appendChild(d);chat.appendChild(wrap);chat.scrollTop=chat.scrollHeight;localStorage.setItem('chat',chat.innerHTML);}
-          function initChat(){addM('কেমন আছো? আমি AI, কোনো help লাগলে বলো! ❤️\\n\\n🧠 MEGA BRAIN 160MB!\\nযা জিজ্ঞাসা করবে সব পারি!\\n\\n🇧🇩 Bangladesh, 🌍 World, 🎮 Games, 🧮 Math','ai')}
-          let saved=localStorage.getItem('chat'); if(saved&&saved.length>50){chat.innerHTML=saved;}else{initChat();}
-          function getAns(q){
+          setTimeout(()=>{document.getElementById('splash').style.display='none'},2800);
+          const chat=document.getElementById('chat'),inp=document.getElementById('inp'),sendBtn=document.getElementById('sendBtn'),preview=document.getElementById('preview'),fIn=document.getElementById('fIn'),pmt=document.getElementById('pmt');
+          let lastAiText='';
+          function getTime(){return new Date().toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})}
+          function sC(){chat.style.display='flex';document.getElementById('gameTab').style.display='none';document.getElementById('imageTab').style.display='none';document.getElementById('tC').classList.add('active');document.getElementById('tG').classList.remove('active');document.getElementById('tI').classList.remove('active')}
+          function sG(){chat.style.display='none';document.getElementById('gameTab').style.display='flex';document.getElementById('imageTab').style.display='none';document.getElementById('tG').classList.add('active');document.getElementById('tC').classList.remove('active');document.getElementById('tI').classList.remove('active')}
+          function sI(){chat.style.display='none';document.getElementById('gameTab').style.display='none';document.getElementById('imageTab').style.display='flex';document.getElementById('tI').classList.add('active');document.getElementById('tC').classList.remove('active');document.getElementById('tG').classList.remove('active')}
+          function saveChat(){localStorage.setItem('sadi_v35', chat.innerHTML); localStorage.setItem('sadi_last_v35', lastAiText);}
+          function loadChat(){let s=localStorage.getItem('sadi_v35'); if(s&&s.length>50){chat.innerHTML=s; chat.scrollTop=chat.scrollHeight; lastAiText=localStorage.getItem('sadi_last_v35')||''; return true;} return false;}
+          function clearChat(){if(confirm('Delete?')){localStorage.removeItem('sadi_v35'); chat.innerHTML=''; initChat();}}
+          function addM(t,c){let w=document.createElement('div');w.className='msg-wrap '+c;let d=document.createElement('div');d.className='msg';d.textContent=t;let tm=document.createElement('span');tm.className='time';tm.textContent=getTime();w.appendChild(d);if(c==='ai'){let a=document.createElement('div');a.className='msg-actions';let b1=document.createElement('button');b1.className='act-btn';b1.textContent='📋 Copy';b1.onclick=()=>{navigator.clipboard.writeText(t); b1.textContent='✅'; setTimeout(()=>b1.textContent='📋 Copy',1500);};let b2=document.createElement('button');b2.className='act-btn';b2.textContent='🔊';b2.onclick=()=>{speakText(t);};a.appendChild(b1);a.appendChild(b2);w.appendChild(a);lastAiText=t;}w.appendChild(tm);chat.appendChild(w);chat.scrollTop=chat.scrollHeight;saveChat();sC();return d;}
+          function showTyping(){let w=document.createElement('div');w.id='typing';w.className='typing';chat.appendChild(w);w.innerHTML='<div class=\"dot\"></div><div class=\"dot\"></div><div class=\"dot\"></div>';chat.scrollTop=chat.scrollHeight;return w}
+          function speakText(x){if('speechSynthesis' in window){let u=new SpeechSynthesisUtterance(x);u.lang='bn-BD';u.rate=0.9;speechSynthesis.cancel();speechSynthesis.speak(u);}}
+          function speakLast(){if(lastAiText) speakText(lastAiText);}
+          function initChat(){addM('কেমন আছো? আমি AI, কোনো help লাগলে বলো! ❤️\\n\\n🧠 MEGA BRAIN 160MB KNOWLEDGE!\\nযা জিজ্ঞাসা করবে সব পারি!\\n\\n🇧🇩 Bangladesh, 🌍 World, 🎮 Games\\n🧮 Math, 🕌 Islamic, 🎨 Edit\\n\\nযা খুশি জিজ্ঞাসা করো!', 'ai')}
+          if(!loadChat()) initChat();
+          fIn.onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{preview.src=r.result;preview.style.display='block';sI()};r.readAsDataURL(f)}
+          function setF(f){preview.style.filter=f}
+          function askChip(q){inp.value=q;ask()}
+          async function gen(){let raw=(pmt.value.trim()||'');if(!raw)return alert('লিখো!');addM('🎨 '+raw,'user');let ty=showTyping();preview.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(raw)+'?seed='+Date.now()+'&width=768&height=768&nologo=true&model=flux';preview.style.display='block';sG();setTimeout(()=>{ty.remove()},1200);}
+          function getMegaAns(q){
             let low=q.toLowerCase().trim();
-            if(low.includes('tomar nam ki')||low.includes('who are you')) return 'আমার নাম SADI AI! 🤖 MEGA BRAIN 160MB! SADI DEVELOPER এর বানানো AI! My AI • Sadi!';
-            if(low.includes('kemon acho')) return 'আলহামদুলিল্লাহ ভালো আছি! 😊 তুমি কেমন আছো? আমি SADI AI, help লাগলে বলো! ❤️';
-            if(low.includes('bangladesh koy namber')) return '🇧🇩 বাংলাদেশ 92 তম বৃহত্তম দেশ (1,47,570 বর্গ কিমি), জনসংখ্যায় 8ম (17 কোটি+), রাজধানী ঢাকা, মুদ্রা টাকা, স্বাধীনতা 1971';
-            if(low.includes('rajdhani')) return '🏛️ বাংলাদেশের রাজধানী: ঢাকা! জনসংখ্যা 2.2 কোটি, প্রতিষ্ঠা 1608!';
-            if(low.includes('chobi edit')) return 'হ্যাঁ ভাই, ছবি Edit পারি! 🎨 B&W, HD Pro!';
-            if(low.includes('ludo')) return '🏆 Ludo Trick: Safe Zone ★ এ থাকো, একটা Token Home এর কাছে নাও, প্রতিপক্ষ Home এর কাছে গেলে কেটে দাও!';
-            if(low.includes('free fire')||low.includes('ff')) return '🔥 FF Rank: Alok+Jota+Kelly+Hayato, MP40+M1887, Bermuda Edge, Gloo 200+';
-            if(low.includes('2+2')) return '🧮 উত্তর: 2+2 = 4';
-            if(low==='hi'||low==='hello'||low.includes('হ্যালো')) return 'কেমন আছো? আমি AI, কোনো help লাগলে বলো! ❤️ 👋 হ্যালো ভাই! MEGA BRAIN 160MB!';
-            return '🧠 MEGA BRAIN 160MB\\n\\nতোমার প্রশ্ন: \\''+q+'\\'\\n\\nআমি সব জানি! 🇧🇩 BD, 🌍 World, 🎮 Games, 🧮 Math\\nDetails এ লিখো, সঠিক উত্তর দেবো!';
+            try{
+              let expr=q.replace(/x/g,'*').replace(/÷/g,'/').replace(/[^0-9+\\-*/().% ]/g,'').trim();
+              if(expr&&expr.match(/^\\d+/)&&expr.match(/\\d+$/)&&expr.length>=3&&expr.length<20&&/[+\\-*/]/.test(expr)){
+                let ans=eval(expr); if(!isNaN(ans)&&isFinite(ans)) return '🧮 উত্তর (MEGA BRAIN 160MB):\\n\\n'+q+' = '+ans+'\\n\\n✅ 100% সঠিক!';
+              }
+            }catch(e){}
+            if(low.includes('tomar nam ki')||low.includes('who are you')||low.includes('tumi ke')) return 'আমার নাম SADI AI! 🤖\\n\\n🧠 MEGA BRAIN 160MB KNOWLEDGE!\\nSADI DEVELOPER এর বানানো AI!\\nMy AI • Sadi - Logo টা আমার!\\nসব প্রশ্নের সঠিক উত্তর দেবো!';
+            if(low.includes('ke banaiche')||low.includes('who made you')) return 'আমাকে বানাইছে SADI DEVELOPER! 👨‍💻🔥\\n🧠 MEGA BRAIN 160MB Edition!\\nPro Developer!';
+            if(low.includes('kemon acho')||low.includes('how are you')) return 'আলহামদুলিল্লাহ ভালো আছি! 😊 তুমি কেমন আছো?\\nআমি SADI AI - MEGA BRAIN 160MB! ❤️';
+            if(low.includes('chobi edit')||low.includes('ছবি এডিট')||low.includes('edit korte paro')) return 'হ্যাঁ ভাই, ছবি Edit পারি! 🎨✅\\nB&W, HD Pro, Sepia, Image Generate\\nEDIT Button এ ক্লিক করো!';
+            if(low.includes('bangladesh koy namber')) return '🇧🇩 বাংলাদেশ সম্পর্কে সঠিক তথ্য (MEGA BRAIN 160MB):\\n\\n📏 আয়তনে: 92 তম (1,47,570 বর্গ কিমি)\\n👥 জনসংখ্যায়: 8ম (17 কোটি+)\\n🏛️ রাজধানী: ঢাকা\\n💰 মুদ্রা: টাকা\\n📅 স্বাধীনতা: 1971\\n🗣️ ভাষা: বাংলা';
+            if(low.includes('rajdhani')) return '🏛️ বাংলাদেশের রাজধানী: ঢাকা!\\nজনসংখ্যা 2.2 কোটি, প্রতিষ্ঠা 1608, মসজিদের শহর!';
+            if(low.includes('namaz')&&low.includes('wakto')) return '🕌 নামাজ: 5 ওয়াক্ত ফরজ\\n1. ফজর - 2 রাকাত\\n2. যোহর - 4 রাকাত\\n3. আসর - 4 রাকাত\\n4. মাগরিব - 3 রাকাত\\n5. এশা - 4 রাকাত\\nমোট ফরজ: 17 রাকাত';
+            if(low.includes('koyta desh')||low.includes('how many country')) return '🌍 বিশ্বে দেশ: 195 টি\\n193 UN সদস্য + 2 পর্যবেক্ষক\\nজনসংখ্যা 8 বিলিয়ন+, মহাদেশ 7 টি, বৃহত্তম রাশিয়া';
+            if(low.includes('ludo')){
+              if(low.includes('6')) return '🎲 Ludo 6 Trick: Token Home এর কাছে নাও, Safe Zone এ থাকো, 6 পাইলে পুরোনো Token আগাও, Dice জোরে Tap করো';
+              return '🏆 Ludo জেতার Trick: Safe Zone ★ এ থাকো, একটা Token Home এর কাছে নাও, প্রতিপক্ষ Home এর কাছে গেলে কেটে দাও!';
+            }
+            if(low.includes('free fire')||low.includes('ff')){
+              if(low.includes('headshot')) return '🎯 FF Headshot: General 95, Red Dot 85, Aim মাথার লেভেলে, Drag Trick, Hayato+Kelly+Moco';
+              return '🔥 FF Rank Push: Alok+Jota+Kelly+Hayato, MP40+M1887, Bermuda Edge, Gloo 200+, রাত 10PM-2AM best!';
+            }
+            if(low.includes('pubg')) return '🔫 PUBG: Sensitivity TPP 95%, Red Dot 55%, Code 7307-1085-6788-4282-435, Conqueror: Erangel Classic';
+            if(low==='hi'||low==='hello'||low.includes('হ্যালো')) return 'কেমন আছো? আমি AI, কোনো help লাগলে বলো! ❤️\\n\\n👋 হ্যালো ভাই!\\n🧠 MEGA BRAIN 160MB!\\nযা খুশি জিজ্ঞাসা করো!';
+            return null;
           }
-          async function ask(){
-            let q=inp.value.trim(); if(!q) return; addM(q,'user'); inp.value=''; 
-            let ty=document.createElement('div'); ty.className='msg ai'; ty.textContent='...'; chat.appendChild(ty);
-            let ans=getAns(q);
-            setTimeout(async()=>{
-              ty.remove();
-              try{
-                let r=await fetch('https://text.pollinations.ai/'+encodeURIComponent('You are SADI AI MEGA BRAIN, made by SADI DEVELOPER. Answer in Bangla short. User: '+q),{signal: AbortSignal.timeout(5000)});
-                if(r.ok){let t=await r.text(); if(t&&t.length>20&&t.length<3000&&!t.includes('503')){addM(t,'ai'); return;}}
-              }catch(e){}
-              addM(ans,'ai');
-            },600);
+          async function ask(q){
+            q=q||inp.value.trim();if(!q)return;addM(q,'user');inp.value='';let ty=showTyping();
+            let ans=getMegaAns(q);
+            if(ans){setTimeout(()=>{ty.remove();addM(ans,'ai');},500);return;}
+            try{
+              let r=await fetch('https://text.pollinations.ai/'+encodeURIComponent('You are SADI AI MEGA BRAIN 160MB, made by SADI DEVELOPER. Answer in Bangla short points. User: '+q),{signal: AbortSignal.timeout(7000)});
+              if(r.ok){let t=await r.text();if(t&&t.length>20&&t.length<3000&&!t.includes('503')){ty.remove();addM(t,'ai');return;}}
+            }catch(e){}
+            ty.remove();
+            addM('🧠 MEGA BRAIN 160MB\\n\\nতোমার প্রশ্ন: \\''+q+'\\'\\nআমি সব জানি! 🇧🇩 BD, 🌍 World, 🎮 Games, 🧮 Math\\nDetails এ লিখো!', 'ai');
           }
-          sendBtn.onclick=ask; inp.onkeypress=e=>{if(e.key==='Enter')ask()};
-          setTimeout(()=>{document.getElementById('splash').style.display='none'},2500);
+          sendBtn.onclick=()=>ask();inp.onkeypress=e=>{if(e.key==='Enter')ask()}
+          function startV(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert('Chrome ব্যবহার করো');let r=new SR();r.lang='bn-BD';r.onresult=e=>{inp.value=e.results[0][0].transcript;ask()};r.start()}
           </script></body></html>\`;
           fs.writeFileSync('www/index.html', html);
-          console.log('HTML created!');
+          console.log('MEGA BRAIN HTML created with Java 21 fix!');
           "
 
-      - name: Build APK
+      - name: Build APK with Java 21
         run: |
           npx cap add android
           cd android
@@ -84,6 +116,6 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: SADI-AI-V34-WORKING
+          name: SADI-AI-V35-MEGA-BRAIN-160MB-FIXED
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
