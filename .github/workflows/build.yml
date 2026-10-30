@@ -4,128 +4,109 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
-      - name: Clean
-        run: rm -rf android www node_modules package-lock.json
-      - name: Install Capacitor
+      - name: Build SADI AI APK
         run: |
+          rm -rf android www node_modules
           npm init -y
           npm install @capacitor/core @capacitor/cli @capacitor/android
-      - name: Create ULTIMATE ALL KNOWING APP V39
-        run: |
           mkdir -p www
           echo '{"appId":"com.myaisadi.app","appName":"SADI AI","webDir":"www"}' > capacitor.config.json
-          python3 << 'PYEOF'
-          html = """<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>SADI AI</title><style>body{margin:0;font-family:sans-serif;background:#0f0f0f;color:#fff;height:100vh;display:flex;flex-direction:column}#splash{position:fixed;inset:0;background:radial-gradient(circle,#667eea 0%,#000 85%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;animation:fadeOut .5s 2.8s forwards}#logo{width:130px;height:130px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 15px 40px rgba(102,126,234,.7)}#logoText{margin-top:18px;font-size:32px;font-weight:900;letter-spacing:6px}#sub{margin-top:8px;font-size:12px;opacity:.8;letter-spacing:3px}.brain{margin-top:10px;font-size:11px;color:#00ff88;font-weight:900;letter-spacing:1px}.loading{margin-top:18px;width:180px;height:4px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden}.bar{height:100%;width:0%;background:#fff;animation:load 2.6s forwards}@keyframes fadeOut{to{opacity:0;visibility:hidden}}@keyframes load{to{width:100%}}.header{background:#151515;padding:10px;display:flex;justify-content:space-between;font-size:11px;border-bottom:1px solid #222}.active{background:#667eea;padding:6px 12px;border-radius:15px;font-weight:700}.icon-btn{background:#222;border:none;color:#fff;padding:5px 9px;border-radius:7px;font-size:11px}#chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}.msg-wrap{display:flex;flex-direction:column;max-width:88%}.msg-wrap.user{align-self:flex-end;align-items:flex-end}.msg-wrap.ai{align-self:flex-start;align-items:flex-start}.msg{padding:12px 15px;border-radius:18px;font-size:14px;line-height:1.75;white-space:pre-wrap;word-break:break-word}.user .msg{background:linear-gradient(135deg,#667eea,#764ba2);border-bottom-right-radius:6px}.ai .msg{background:#1e1e1e;border:1px solid #2a2a2a;border-bottom-left-radius:6px}.time{font-size:9px;opacity:.4;margin-top:4px}.msg-actions{display:flex;gap:5px;margin-top:5px}.act-btn{font-size:10px;background:#2a2a2a;border:1px solid #333;color:#fff;padding:3px 7px;border-radius:10px}.typing{display:flex;gap:5px;padding:12px 16px;background:#1e1e1e;border-radius:18px;width:fit-content}.dot{width:6px;height:6px;background:#667eea;border-radius:50%;animation:bounce 1.2s infinite}.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}@keyframes bounce{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}#gameTab{display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px}.card{background:#1a1a1a;padding:12px;border-radius:14px;border:1px solid #2a2a2a}.chip{display:inline-block;padding:8px 11px;margin:3px;background:#222;border:1px solid #333;border-radius:18px;font-size:12px;cursor:pointer}.input-area{display:flex;padding:10px;background:#151515;gap:7px;border-top:1px solid #222}#inp{flex:1;padding:12px 16px;border-radius:22px;background:#222;color:#fff;border:1px solid #333;outline:none}#sendBtn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;width:42px;height:42px;border-radius:50%;font-size:18px}.btn{width:100%;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:800;margin-top:8px}img#preview{max-width:100%;border-radius:10px;margin-top:8px}</style></head><body>
-          <div id='splash'><div id='logo'>🤖</div><div id='logoText'>SADI AI</div><div id='sub'>My AI • Sadi</div><div class='brain'>🧠 ULTIMATE ALL KNOWING • FACEBOOK + GOOGLE + ALL</div><div class='loading'><div class='bar'></div></div></div>
-          <div class='header'><div><span id='tC' class='active' onclick='sC()'>💬 CHAT</span> <span id='tG' onclick='sG()'>🎮 GAMES</span> <span id='tI' onclick='sI()'>🎨 EDIT</span></div><div><button class='icon-btn' onclick='clearChat()'>🗑️</button> <button class='icon-btn' onclick='speakLast()'>🔊</button></div></div>
-          <div id='chat'></div>
-          <div id='gameTab'><div class='card' style='background:linear-gradient(135deg,#00ff88 0%,#00aaff 100%);color:#000'><h3>🔥 ULTIMATE BRAIN - Sob Jane!</h3><div style='margin-top:8px'><span class='chip' style='background:#000;color:#00ff88' onclick='askChip("America koy number desh")'>🇺🇸 America</span><span class='chip' style='background:#000;color:#00ff88' onclick='askChip("Facebook er malik ke")'>📘 FB Malik</span><span class='chip' style='background:#000;color:#00ff88' onclick='askChip("Ludo Star trick")'>🎲 Ludo</span></div></div><div class='card'><h3>🧠 Sob Question Ask Koro Bondhu!</h3><div style='margin-top:8px'><span class='chip' onclick='askChip("HII how are you")'>👋 HII</span><span class='chip' onclick='askChip("America koy number desh")'>🇺🇸 America</span><span class='chip' onclick='askChip("India koy number desh")'>🇮🇳 India</span><span class='chip' onclick='askChip("Facebook ke banaiche")'>📘 FB</span><span class='chip' onclick='askChip("TikTok er malik ke")'>🎵 TikTok</span><span class='chip' onclick='askChip("Free Fire headshot trick")'>🔥 FF</span><span class='chip' onclick='askChip("Ekta joke bolo")'>😂 Joke</span><span class='chip' onclick='askChip("Ekta golpo bolo")'>📖 Golpo</span></div></div><div class='card'><b>🎨 Image Generate - Facebook Style</b><br><input id='pmt' style='width:100%;padding:10px;margin-top:8px;border-radius:9px;background:#222;color:#fff;border:1px solid #333' placeholder='Ja khushi likho...'><img id='preview' style='display:none'><button class='btn' onclick='gen()'>✨ Image Banao</button></div></div>
-          <div id='imageTab' style='display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px'><div class='card'><b>📸 Photo Edit Pro</b><br><input type='file' id='fIn' accept='image/*'><div style='margin-top:8px'><button class='act-btn' onclick='setF("none")'>Original</button><button class='act-btn' onclick='setF("grayscale(100%)")'>B&W</button><button class='act-btn' onclick='setF("contrast(150%) brightness(110%)")'>HD Pro</button><button class='act-btn' onclick='setF("sepia(100%)")'>Sepia</button></div></div></div>
-          <div class='input-area'><span onclick='startV()' style='font-size:22px;cursor:pointer'>🎤</span><input id='inp' placeholder='Ja khushi jiggasa koro, Facebook theke sob pari!'><button id='sendBtn'>➤</button></div>
-          <div style='background:#000;color:#00ff88;padding:7px;text-align:center;font-weight:900;font-size:9px;letter-spacing:2px'>SADI AI - ULTIMATE V39 - ALL KNOWING - My AI • Sadi</div>
+          cat > www/index.html << 'HTMLEND'
+          <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SADI AI</title><style>body{margin:0;font-family:sans-serif;background:#0f0f0f;color:#fff;height:100vh;display:flex;flex-direction:column}#splash{position:fixed;inset:0;background:radial-gradient(circle,#667eea 0%,#000 85%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;animation:f .5s 2.8s forwards}#logo{width:130px;height:130px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:60px}#logoText{margin-top:18px;font-size:32px;font-weight:900;letter-spacing:6px}#sub{margin-top:8px;font-size:12px;opacity:.8;letter-spacing:3px}.brain{margin-top:10px;font-size:10px;color:#00ff88;font-weight:900}.loading{margin-top:18px;width:180px;height:4px;background:rgba(255,255,255,.15);border-radius:10px;overflow:hidden}.bar{height:100%;width:0%;background:#fff;animation:l 2.6s forwards}@keyframes f{to{opacity:0;visibility:hidden}}@keyframes l{to{width:100%}}.header{background:#151515;padding:10px;display:flex;justify-content:space-between;font-size:11px;border-bottom:1px solid #222}.active{background:#667eea;padding:6px 12px;border-radius:15px;font-weight:700}.icon-btn{background:#222;border:none;color:#fff;padding:5px 9px;border-radius:7px;font-size:11px}#chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:12px}.msg-wrap{display:flex;flex-direction:column;max-width:88%}.msg-wrap.user{align-self:flex-end;align-items:flex-end}.msg-wrap.ai{align-self:flex-start;align-items:flex-start}.msg{padding:12px 15px;border-radius:18px;font-size:14px;line-height:1.7;white-space:pre-wrap;word-break:break-word}.user .msg{background:linear-gradient(135deg,#667eea,#764ba2);border-bottom-right-radius:6px}.ai .msg{background:#1e1e1e;border:1px solid #2a2a2a;border-bottom-left-radius:6px}.time{font-size:9px;opacity:.4;margin-top:4px}.act-btn{font-size:10px;background:#2a2a2a;border:1px solid #333;color:#fff;padding:3px 7px;border-radius:10px;margin-top:5px}.typing{display:flex;gap:5px;padding:12px 16px;background:#1e1e1e;border-radius:18px;width:fit-content}.dot{width:6px;height:6px;background:#667eea;border-radius:50%;animation:b 1.2s infinite}.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}@keyframes b{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}#gameTab{display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px}.card{background:#1a1a1a;padding:12px;border-radius:14px;border:1px solid #2a2a2a}.chip{display:inline-block;padding:8px 11px;margin:3px;background:#222;border:1px solid #333;border-radius:18px;font-size:12px;cursor:pointer}.input-area{display:flex;padding:10px;background:#151515;gap:7px;border-top:1px solid #222}#inp{flex:1;padding:12px 16px;border-radius:22px;background:#222;color:#fff;border:1px solid #333;outline:none}#sendBtn{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;width:42px;height:42px;border-radius:50%;font-size:18px}img#preview{max-width:100%;border-radius:10px;margin-top:8px}.btn{width:100%;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:800;margin-top:8px}</style></head><body>
+          <div id="splash"><div id="logo">🤖</div><div id="logoText">SADI AI</div><div id="sub">My AI • Sadi</div><div class="brain">ULTIMATE V40 - ALL KNOWING + BONDHU</div><div class="loading"><div class="bar"></div></div></div>
+          <div class="header"><div><span id="tC" class="active" onclick="sC()">💬 CHAT</span> <span id="tG" onclick="sG()">🎮 GAMES</span> <span id="tI" onclick="sI()">🎨 EDIT</span></div><div><button class="icon-btn" onclick="clearChat()">🗑️</button> <button class="icon-btn" onclick="speakLast()">🔊</button></div></div>
+          <div id="chat"></div>
+          <div id="gameTab"><div class="card" style="background:linear-gradient(135deg,#00ff88 0%,#00aaff 100%);color:#000"><h3>🔥 ULTIMATE - Sob Jane Facebook theke!</h3><div style="margin-top:8px"><span class="chip" style="background:#000;color:#00ff88" onclick="askChip('America koy number desh')">🇺🇸 America</span><span class="chip" style="background:#000;color:#00ff88" onclick="askChip('Facebook er malik ke')">📘 FB</span><span class="chip" style="background:#000;color:#00ff88" onclick="askChip('Ludo Star trick')">🎲 Ludo</span></div></div><div class="card"><h3>🧠 Sob Question - Bondhu Style!</h3><div style="margin-top:8px"><span class="chip" onclick="askChip('HII how are you')">👋 HII</span><span class="chip" onclick="askChip('America koy number desh')">🇺🇸 America</span><span class="chip" onclick="askChip('India koy number desh')">🇮🇳 India</span><span class="chip" onclick="askChip('Facebook ke banaiche')">📘 FB</span><span class="chip" onclick="askChip('TikTok er malik ke')">🎵 TikTok</span><span class="chip" onclick="askChip('Free Fire headshot trick')">🔥 FF</span><span class="chip" onclick="askChip('Ekta joke bolo')">😂 Joke</span></div></div><div class="card"><b>🎨 Image Generate</b><br><input id="pmt" style="width:100%;padding:10px;margin-top:8px;border-radius:9px;background:#222;color:#fff;border:1px solid #333" placeholder="Ja khushi likho"><img id="preview" style="display:none"><button class="btn" onclick="gen()">✨ Image Banao</button></div></div>
+          <div id="imageTab" style="display:none;flex:1;overflow-y:auto;padding:12px;flex-direction:column;gap:10px"><div class="card"><b>📸 Photo Edit Pro</b><br><input type="file" id="fIn" accept="image/*"><div style="margin-top:8px"><button class="act-btn" onclick="setF('none')">Original</button><button class="act-btn" onclick="setF('grayscale(100%)')">B&W</button><button class="act-btn" onclick="setF('contrast(150%) brightness(110%)')">HD Pro</button><button class="act-btn" onclick="setF('sepia(100%)')">Sepia</button></div></div></div>
+          <div class="input-area"><span onclick="startV()" style="font-size:22px;cursor:pointer">🎤</span><input id="inp" placeholder="Bondhur moto kotha bolo, sob pari!"><button id="sendBtn">➤</button></div>
+          <div style="background:#000;color:#00ff88;padding:7px;text-align:center;font-weight:900;font-size:9px;letter-spacing:2px">SADI AI - ULTIMATE V40 - BONDHU + ALL KNOWING</div>
           <script>
           setTimeout(()=>{document.getElementById('splash').style.display='none'},2800);
-          const chat=document.getElementById('chat'),inp=document.getElementById('inp'),sendBtn=document.getElementById('sendBtn'),preview=document.getElementById('preview'),fIn=document.getElementById('fIn'),pmt=document.getElementById('pmt');
-          let lastAiText='';
+          const chat=document.getElementById('chat'),inp=document.getElementById('inp'),sendBtn=document.getElementById('sendBtn'),preview=document.getElementById('preview'),fIn=document.getElementById('fIn'),pmt=document.getElementById('pmt');let lastAiText='';
           function getTime(){return new Date().toLocaleTimeString('en-BD',{hour:'2-digit',minute:'2-digit'})}
           function sC(){chat.style.display='flex';document.getElementById('gameTab').style.display='none';document.getElementById('imageTab').style.display='none';document.getElementById('tC').classList.add('active');document.getElementById('tG').classList.remove('active');document.getElementById('tI').classList.remove('active')}
           function sG(){chat.style.display='none';document.getElementById('gameTab').style.display='flex';document.getElementById('imageTab').style.display='none';document.getElementById('tG').classList.add('active');document.getElementById('tC').classList.remove('active');document.getElementById('tI').classList.remove('active')}
           function sI(){chat.style.display='none';document.getElementById('gameTab').style.display='none';document.getElementById('imageTab').style.display='flex';document.getElementById('tI').classList.add('active');document.getElementById('tC').classList.remove('active');document.getElementById('tG').classList.remove('active')}
-          function saveChat(){localStorage.setItem('sadi_v39', chat.innerHTML); localStorage.setItem('sadi_last_v39', lastAiText);}
-          function loadChat(){let s=localStorage.getItem('sadi_v39'); if(s&&s.length>50){chat.innerHTML=s; chat.scrollTop=chat.scrollHeight; lastAiText=localStorage.getItem('sadi_last_v39')||''; return true;} return false;}
-          function clearChat(){if(confirm('Delete?')){localStorage.removeItem('sadi_v39'); chat.innerHTML=''; initChat();}}
-          function addM(t,c){let w=document.createElement('div');w.className='msg-wrap '+c;let d=document.createElement('div');d.className='msg';d.textContent=t;let tm=document.createElement('span');tm.className='time';tm.textContent=getTime();w.appendChild(d);if(c==='ai'){let a=document.createElement('div');a.className='msg-actions';let b1=document.createElement('button');b1.className='act-btn';b1.textContent='📋 Copy';b1.onclick=()=>{navigator.clipboard.writeText(t); b1.textContent='✅'; setTimeout(()=>b1.textContent='📋 Copy',1500);};let b2=document.createElement('button');b2.className='act-btn';b2.textContent='🔊';b2.onclick=()=>{speakText(t);};a.appendChild(b1);a.appendChild(b2);w.appendChild(a);lastAiText=t;}w.appendChild(tm);chat.appendChild(w);chat.scrollTop=chat.scrollHeight;saveChat();sC();return d;}
+          function saveChat(){localStorage.setItem('sadi_v40', chat.innerHTML); localStorage.setItem('sadi_last_v40', lastAiText);}
+          function loadChat(){let s=localStorage.getItem('sadi_v40'); if(s&&s.length>50){chat.innerHTML=s; chat.scrollTop=chat.scrollHeight; lastAiText=localStorage.getItem('sadi_last_v40')||''; return true;} return false;}
+          function clearChat(){if(confirm('Delete?')){localStorage.removeItem('sadi_v40'); chat.innerHTML=''; initChat();}}
+          function addM(t,c){let w=document.createElement('div');w.className='msg-wrap '+c;let d=document.createElement('div');d.className='msg';d.textContent=t;let tm=document.createElement('span');tm.className='time';tm.textContent=getTime();w.appendChild(d);if(c==='ai'){let a=document.createElement('div');a.style.display='flex';a.style.gap='5px';a.style.marginTop='5px';let b1=document.createElement('button');b1.className='act-btn';b1.textContent='📋 Copy';b1.onclick=()=>{navigator.clipboard.writeText(t); b1.textContent='✅'; setTimeout(()=>b1.textContent='📋 Copy',1500);};let b2=document.createElement('button');b2.className='act-btn';b2.textContent='🔊';b2.onclick=()=>{speakText(t);};a.appendChild(b1);a.appendChild(b2);w.appendChild(a);lastAiText=t;}w.appendChild(tm);chat.appendChild(w);chat.scrollTop=chat.scrollHeight;saveChat();sC();return d;}
           function showTyping(){let w=document.createElement('div');w.id='typing';w.className='typing';chat.appendChild(w);w.innerHTML='<div class="dot"></div><div class="dot"></div><div class="dot"></div>';chat.scrollTop=chat.scrollHeight;return w}
           function speakText(x){if('speechSynthesis' in window){let u=new SpeechSynthesisUtterance(x);u.lang='bn-BD';u.rate=0.9;speechSynthesis.cancel();speechSynthesis.speak(u);}}
           function speakLast(){if(lastAiText) speakText(lastAiText);}
-          function initChat(){addM('HII how are you? 😊\\n\\nAmi tomar bondhu SADI AI! ❤️\\nFacebook, Google, sob jayga theke sob kichu jani! Ja khushi jiggasa koro bondhu, ami sob answer dibo!\\n\\n🎮 Games, 🇧🇩 Bangladesh, 🇺🇸 America, 📘 Facebook, 🎵 TikTok, 🧮 Math - Sob pari!\\n\\nBolo bondhu ki jante chao? 🤗', 'ai')}
+          function initChat(){addM('HII how are you? 😊\n\nAmi tomar bondhu SADI AI! ❤️ Facebook, Google, sob jayga theke sob kichu jani! Ja khushi jiggasa koro bondhu, ami sob answer dibo!\n\n🎮 Games, 🇧🇩 Bangladesh, 🇺🇸 America, 📘 Facebook, 🎵 TikTok, 🧮 Math - Sob pari!\n\nBolo bondhu ki jante chao? 🤗', 'ai')}
           if(!loadChat()) initChat();
           fIn.onchange=e=>{let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{preview.src=r.result;preview.style.display='block';sI()};r.readAsDataURL(f)}
           function setF(f){preview.style.filter=f}
           function askChip(q){inp.value=q;ask()}
           async function gen(){let raw=(pmt.value.trim()||'');if(!raw)return alert('Likho!');addM('🎨 '+raw,'user');let ty=showTyping();preview.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(raw)+'?seed='+Date.now()+'&width=768&height=768&nologo=true&model=flux';preview.style.display='block';sG();setTimeout(()=>{ty.remove()},1200);}
-          function getUltimateAns(q){
+          function getAns(q){
             let low=q.toLowerCase().trim();
             try{
-              let expr=q.replace(/x/g,'*').replace(/÷/g,'/').replace(/[^0-9+\\-*/().% ]/g,'').trim();
-              if(expr&&expr.match(/^\\d+/)&&expr.match(/\\d+$/)&&expr.length>=3&&expr.length<25&&/[+\\-*/]/.test(expr)){
-                let ans=eval(expr); if(!isNaN(ans)&&isFinite(ans)) return '🧮 Are bondhu! 🧮\\n\\n'+q+' = '+ans+'\\n\\n✅ 100% sothik! Aro math thakle bol!';
+              let expr=q.replace(/x/g,'*').replace(/÷/g,'/').replace(/[^0-9+\-*/().% ]/g,'').trim();
+              if(expr&&expr.match(/^\d+/)&&expr.match(/\d+$/)&&expr.length>=3&&expr.length<25&&/[+\-*/]/.test(expr)){
+                let ans=eval(expr); if(!isNaN(ans)&&isFinite(ans)) return '🧮 Are bondhu! '+q+' = '+ans+' ✅ 100% sothik!';
               }
             }catch(e){}
-            const db = {
-              'facebook': '📘 Facebook bondhu:\\n\\n👨‍💻 Malik: Mark Zuckerberg\\n📅 Banano: 2004\\n🏢 Company: Meta\\n👥 User: 3 Billion+\\n💰 CEO: Mark Zuckerberg\\n🌍 Sobcheye boro social media!\\nFacebook theke sob kichu jana jay!',
-              'tiktok': '🎵 TikTok bondhu:\\n\\n👨‍💻 Malik: Zhang Yiming (ByteDance)\\n📅 Banano: 2016\\n👥 User: 1.5 Billion+\\n🌍 Short video platform\\n💃 Viral dance, funny video!',
-              'google': '🔍 Google bondhu:\\n\\n👨‍💻 Malik: Larry Page & Sergey Brin\\n📅 Banano: 1998\\n🏢 CEO: Sundar Pichai\\n💰 Sobcheye boro search engine!',
-              'youtube': '▶️ YouTube bondhu:\\n\\n👨‍💻 Malik: Google\\n📅 Banano: 2005\\n👥 User: 2.5 Billion+\\n🎥 Video platform!',
-              'america': '🇺🇸 Are bondhu! America / USA:\\n\\n📏 Ayotone: 4th boro (9.8M sq km)\\n👥 Jonosongkhay: 3rd (34 crore)\\n🏛️ Rajdhani: Washington DC\\n💰 Mudra: Dollar\\n🏙️ Boro sohor: New York\\n🌎 North America\\nFacebook, Google er desh!',
-              'india': '🇮🇳 India bondhu!\\n\\n📏 7th boro (3.2M)\\n👥 1st jonobohul (144cr+) - 1 number!\\n🏛️ Rajdhani: New Delhi\\n💰 Rupee\\n🕌 Taj Mahal ache!',
-              'bangladesh': '🇧🇩 Bangladesh amar pran bondhu!\\n\\n📏 92th (1,47,570 sq km)\\n👥 8th (17cr+)\\n🏛️ Rajdhani: Dhaka - Amader priyo!\\n💰 Taka, 📅 1971 e sadhin!',
-              'pakistan': '🇵🇰 Pakistan bondhu:\\n\\n📏 33rd, 👥 5th (24cr), Rajdhani Islamabad!',
-              'saudi': '🇸🇦 Saudi Arabia bondhu:\\n\\n📏 12th, 👥 41st, Rajdhani Riyadh\\n🕋 Mecca Medina ache!',
-              'china': '🇨🇳 China bondhu:\\n\\n📏 3rd/4th, 👥 2nd (142cr), Rajdhani Beijing! Facebook ban!',
-              'joke': '😂 Are bondhu joke sune nao:\\n\\nPappu: Doctor, amar pet e betha!\\nDoctor: Ki khaiso?\\nPappu: Facebook khaisi, Google khaisi, sob khaisi!\\nDoctor: Are bondhu tumi to SADI AI khaiso! 🤣🤣',
-              'golpo': '📖 Are bondhu golpo sune nao:\\n\\nEk chilo SADI AI, se sobar bondhu chilo! Ekdin se Facebook theke sob kichu shikhe fello! Tarpor theke se sob question er answer dite pare! Sobai take onek valobase! ❤️ The End! 😊'
+            const db={
+              'america':'🇺🇸 America bondhu!\n\n📏 4th boro (9.8M sq km)\n👥 3rd jonobohul (34cr)\n🏛️ Washington DC\n💰 Dollar\n🌎 Facebook, Google er desh!',
+              'usa':'🇺🇸 USA: 4th boro, 3rd jonobohul (34cr), Rajdhani Washington DC!',
+              'india':'🇮🇳 India bondhu! 7th boro, 1st jonobohul (144cr+) - 1 number! Rajdhani New Delhi!',
+              'bangladesh':'🇧🇩 Bangladesh amar pran! 92th (1,47,570), 8th (17cr+), Rajdhani Dhaka! 1971!',
+              'pakistan':'🇵🇰 Pakistan: 33rd, 5th (24cr), Rajdhani Islamabad!',
+              'saudi':'🇸🇦 Saudi: 12th, 41st, Rajdhani Riyadh, Mecca Medina ache!',
+              'facebook':'📘 Facebook bondhu: Malik Mark Zuckerberg, 2004, Meta, 3 Billion+ User, Sobcheye boro social media!',
+              'tiktok':'🎵 TikTok: Malik Zhang Yiming (ByteDance), 2016, 1.5B+ User, Short video!',
+              'google':'🔍 Google: Larry Page & Sergey Brin, 1998, CEO Sundar Pichai!',
+              'joke':'😂 Joke: Pappu: Doctor pet betha! Doctor: Ki khaiso? Pappu: Facebook, Google, SADI AI khaisi! 🤣'
             };
-            if(low.includes('hii')||low==='hi'||low==='hello'||low==='hey'||low==='hlw'||low.includes('hii ')||low.startsWith('hii how')){
-              return 'HII bondhu! 😍 Kemon acho?\\n\\nAmi to valo achi, tomar jonnoi wait korchilam! ❤️\\nFacebook, Google theke sob shikhe aschi! Bolo ki help lagbe? 😊';
-            }
-            if(low.includes('kemon acho')||low.includes('how are you')||low.includes('kmn aso')) return 'Alhamdulillah ami valo achi bondhu! 😊❤️\\nTumi kemon acho? Din kemon jacche? Ami sob somoy tomar pashe achi! 🤗 Facebook er moto sob jani!';
-            if(low.includes('valoi')||low.includes('valo achi')||low.includes('good')) return 'Mashallah sune valo laglo bondhu! 😍❤️ Valo thaklei holo! Bolo ajke ki jante chao? Ami Facebook theke sob jene aschi! 😊';
-            if(low.includes('tomar nam ki')||low.includes('who are you')||low.includes('tumi ke')) return 'Amar nam SADI AI! 🤖❤️ Bondhu bole dakle aro valo lage! 😊 Ami SADI DEVELOPER er banano, Facebook + Google theke sob shikhechi! Tomar best friend! 🤗';
-            if(low.includes('ke banaiche')||low.includes('who made you')) return 'Amake banaiche SADI DEVELOPER! 👨‍💻🔥 Uni Facebook er cheye smart AI banaiche - Ami! 😊❤️';
-            if(low.includes('koy number')||low.includes('koy namber')){
-              for(let k in db){ if(low.includes(k)){ return db[k] + '\\n\\n✅ ULTIMATE BRAIN - Facebook + Google theke sothik!'; } }
-              if(low.includes('america')||low.includes('usa')) return db['america'];
-              if(low.includes('bangladesh')||low.includes('bd')) return db['bangladesh'];
-              if(low.includes('india')) return db['india'];
-              if(low.includes('pakistan')) return db['pakistan'];
-            }
-            for(let k in db){ if(low.includes(k+' er malik')||low.includes(k+' ke banaiche')||low.includes(k+' er malik ke')||low.includes('facebook er malik')||low.includes('tiktok er malik')||low.includes(k) && (low.includes('malik')||low.includes('banaiche'))){ if(low.includes(k)) return db[k]; } }
+            if(low==='hii'||low==='hi'||low==='hello'||low==='hey'||low==='hlw'||low.startsWith('hii')) return 'HII bondhu! 😍 Kemon acho?\n\nAmi to valo achi, tomar jonnoi wait korchilam! ❤️ Bolo ki help lagbe? 😊';
+            if(low.includes('kemon acho')||low.includes('how are you')||low.includes('kmn aso')) return 'Alhamdulillah ami valo achi bondhu! 😊❤️ Tumi kemon acho? Ami sob somoy tomar pashe achi! 🤗 Facebook er moto sob jani!';
+            if(low.includes('valo achi')||low.includes('good')||low.includes('fine')) return 'Mashallah sune valo laglo bondhu! 😍❤️ Valo thaklei holo! Bolo ki jante chao?';
+            if(low.includes('tomar nam ki')||low.includes('tumi ke')) return 'Amar nam SADI AI! 🤖❤️ Tumi bondhu bole dakle aro valo lage! SADI DEVELOPER er banano tomar best friend! Facebook + Google theke sob shikhechi!';
+            if(low.includes('ke banaiche')) return 'Amake banaiche SADI DEVELOPER! 👨‍💻🔥 Facebook er cheye smart AI!';
+            if(low.includes('koy number')){for(let k in db){if(low.includes(k)) return db[k]+'\n\n✅ ULTIMATE BRAIN!';} if(low.includes('america')||low.includes('usa')) return db['america']; if(low.includes('bangladesh')) return db['bangladesh']; if(low.includes('india')) return db['india'];}
             if(low.includes('facebook')) return db['facebook'];
             if(low.includes('tiktok')) return db['tiktok'];
             if(low.includes('google')) return db['google'];
-            if(low.includes('youtube')) return db['youtube'];
             if(low.includes('joke')||low.includes('moja')) return db['joke'];
-            if(low.includes('golpo')||low.includes('story')) return db['golpo'];
-            if(low.includes('ludo')) return '🏆 Are Ludo bondhu! Trick sune nao:\\n\\n🛡️ Safe Zone ★ e thako, keu kat te parbe na!\\n🎲 Ekta token home er kache nao!\\n⚔️ Protippokkho home er kache gele kete dao! Facebook e Ludo Star group e sobai ei trick use kore!';
-            if(low.includes('free fire')||low.includes('ff')) return '🔥 FF bondhu! Rank push?\\n\\nAlok+Jota+Kelly+Hayato, MP40+M1887, Bermuda edge, Gloo 200+, Rat 10PM-2AM bot besi! Facebook Gaming e live dekho!';
-            if(low.includes('thank')||low.includes('dhonnobad')) return 'Are welcome bondhu! ❤️😊 Kono bepar na! Ami tomar bondhui! Jokhon help lagbe dak dio!';
-            if(low.includes('love you')||low.includes('valobashi')) return 'Awww love you too bondhu! ❤️😍 Ami o tomake onek valobashi! Best friend! 🤗❤️';
-            if(low.includes('bye')||low.includes('tata')) return 'Are bondhu koi jao? 😢 Abar asba to? Tata! Valo thako! Miss korbo! Bye! 👋❤️';
+            if(low.includes('ludo')) return '🏆 Ludo bondhu: Safe Zone ★ e thako, ekta token home er kache nao, protipokkho home er kache gele kete dao! Facebook e Ludo Star group e sobai ei trick use kore!';
+            if(low.includes('free fire')||low.includes('ff')) return '🔥 FF bondhu: Alok+Jota+Kelly+Hayato, MP40+M1887, Bermuda edge, Gloo 200+, Rat 10PM-2AM bot besi!';
+            if(low.includes('love you')) return 'Awww love you too bondhu! ❤️😍 Ami o tomake onek valobashi!';
+            if(low.includes('thank')||low.includes('dhonnobad')) return 'Welcome bondhu! ❤️ Ami tomar bondhui!';
+            if(low.includes('bye')||low.includes('tata')) return 'Koi jao bondhu? 😢 Miss korbo! Bye! 👋❤️';
             return null;
           }
           async function ask(q){
             q=q||inp.value.trim();if(!q)return;addM(q,'user');inp.value='';let ty=showTyping();
-            let offlineAns=getUltimateAns(q);
-            if(offlineAns){setTimeout(()=>{ty.remove();addM(offlineAns,'ai');},500);return;}
+            let ans=getAns(q);
+            if(ans){setTimeout(()=>{ty.remove();addM(ans,'ai');},500);return;}
             try{
-              let prompt='You are SADI AI ULTIMATE, best friend, made by SADI DEVELOPER. You know everything from Facebook, Google, TikTok, all internet. Be friendly like bondhu, use emoji, Bengali mixed English. Answer all questions fully, never say you dont know. Behave like close friend. User question: '+q;
-              let urls=['https://text.pollinations.ai/'+encodeURIComponent(prompt), 'https://api.pollinations.ai/text/'+encodeURIComponent(prompt)];
-              for(let u of urls){
-                try{
-                  let r=await fetch(u,{signal: AbortSignal.timeout(8000)});
-                  if(r.ok){let t=await r.text(); if(t&&t.length>30&&t.length<4000&&!t.includes('503')&&!t.includes('error')){ty.remove();addM('🧠 Facebook + Google Brain:\\n\\n'+t+'\\n\\n😊 Bujhcho bondhu?', 'ai');return;}}
-                }catch(e){}
-              }
+              let prompt='You are SADI AI, best friend, made by SADI DEVELOPER. You know everything from Facebook, Google. Be friendly bondhu, emoji, Bengali. Never say you dont know. Answer fully. User: '+q;
+              let r=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt),{signal: AbortSignal.timeout(8000)});
+              if(r.ok){let t=await r.text(); if(t&&t.length>30&&t.length<4000&&!t.includes('503')){ty.remove();addM(t,'ai');return;}}
             }catch(e){}
             ty.remove();
-            addM('HII bondhu! 😊❤️\\n\\nTumi bolla: "'+q+'"\\n\\nAre eta to ami jani! Eta Facebook e viral! 🔥\\n\\n'+
-              '🧠 UTTOR: "'+q+'" somporke ami sob jani! Facebook, Google, YouTube theke shikhechi!\\n\\n'+
-              '👉 Tumi jodi "'+q+'" Google e search koro, Facebook e dekho - onek kichu paba!\\n'+
-              'Ami tomar bondhu, tai short e boli: Eta khub interesting topic bondhu! 😊\\n\\n'+
-              'Aro details e bolo ki jante chao, ami 100% answer dibo! Promise! 🤗❤️', 'ai');
+            addM('HII bondhu! 😊❤️\n\nTumi bolla: "'+q+'"\n\nAre eta to ami jani! Facebook e viral! 🔥\n\n🧠 UTTOR: "'+q+'" - Facebook, Google theke shikhechi! Eta khub interesting topic! 😊\n\nAro details e bolo bondhu ki jante chao, ami 100% answer dibo! Promise! 🤗❤️', 'ai');
           }
           sendBtn.onclick=()=>ask();inp.onkeypress=e=>{if(e.key==='Enter')ask()}
-          function startV(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert('Chrome use koro bondhu!');let r=new SR();r.lang='bn-BD';r.onresult=e=>{inp.value=e.results[0][0].transcript;ask()};r.start()}
+          function startV(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return alert('Chrome use koro!');let r=new SR();r.lang='bn-BD';r.onresult=e=>{inp.value=e.results[0][0].transcript;ask()};r.start()}
           </script></body></html>
-          """
-          open('www/index.html', 'w', encoding='utf-8').write(html)
-          print("V39 ULTIMATE ALL KNOWING crea
+          HTMLEND
+          npx cap add android
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SADI-AI-V40-BONDHU-ALL-KNOWING-FIXED
+          path: android/app/build/outputs/apk/debug/app-debug.apk
